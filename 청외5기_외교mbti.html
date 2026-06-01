@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>외교 MBTI — 나의 외교 스타일은?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0f1e;--sf:#111827;--sf2:#1a2235;--bd:rgba(255,255,255,0.08);--bdh:rgba(255,255,255,0.2);--tx:#f0f4ff;--sub:rgba(240,244,255,0.55);--dim:rgba(240,244,255,0.3);--ac:#4f9cf9;--gd:#c9a84c;--gl:#e8c878;--gdim:rgba(201,168,76,0.15);}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;overflow-x:hidden;}
+.bg-grid{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(79,156,249,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(79,156,249,0.04) 1px,transparent 1px);background-size:60px 60px;}
+.orb{position:fixed;border-radius:50%;filter:blur(100px);pointer-events:none;z-index:0;}
+.o1{width:min(600px,80vw);height:min(600px,80vw);background:rgba(79,156,249,0.07);top:-20%;left:-10%;}
+.o2{width:min(500px,70vw);height:min(500px,70vw);background:rgba(201,168,76,0.05);bottom:-20%;right:-10%;}
+.w{position:relative;z-index:1;max-width:700px;margin:0 auto;padding:0 clamp(1rem,4vw,2rem);}
+.screen{display:none!important;}
+.screen.active{display:block!important;}
+#intro.active{display:flex!important;flex-direction:column;align-items:center;}
+#loading.active{display:flex!important;flex-direction:column;align-items:center;justify-content:center;}
+
+/* ── INTRO ── */
+#intro{min-height:100vh;text-align:center;padding:clamp(2rem,6vh,4rem) clamp(1rem,4vw,2rem);justify-content:center;}
+.ibadge{display:inline-flex;align-items:center;gap:8px;font-size:clamp(10px,2.5vw,12px);letter-spacing:.1em;text-transform:uppercase;color:var(--gd);border:1px solid rgba(201,168,76,.3);background:var(--gdim);padding:6px 18px;border-radius:99px;margin-bottom:clamp(1.5rem,4vh,2.5rem);animation:fup .6s ease both;}
+.iglobe{font-size:clamp(52px,12vw,76px);margin-bottom:clamp(1rem,3vh,1.5rem);animation:fup .6s .1s ease both;display:block;}
+.ititle{font-family:'Noto Serif KR',serif;font-size:clamp(1.8rem,6vw,3.4rem);font-weight:700;line-height:1.25;margin-bottom:clamp(.8rem,2vh,1rem);animation:fup .6s .15s ease both;}
+.ititle span{background:linear-gradient(135deg,var(--ac),var(--gl));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.isub{font-size:clamp(13px,3.5vw,16px);color:var(--sub);line-height:1.8;max-width:460px;margin:0 auto clamp(1.5rem,4vh,2.5rem);animation:fup .6s .2s ease both;}
+.imeta{display:flex;flex-wrap:wrap;gap:clamp(.8rem,3vw,2rem);justify-content:center;font-size:clamp(11px,3vw,13px);color:var(--dim);margin-bottom:clamp(1.5rem,4vh,2.5rem);animation:fup .6s .25s ease both;}
+.imeta span::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gd);vertical-align:middle;margin-right:6px;}
+.nwrap{width:100%;max-width:380px;margin:0 auto clamp(1.2rem,3vh,1.8rem);animation:fup .6s .28s ease both;}
+.nlbl{font-size:13px;color:var(--dim);margin-bottom:8px;text-align:left;display:block;}
+.ninp{width:100%;padding:.9rem 1.1rem;background:var(--sf);border:1px solid var(--bd);border-radius:12px;color:var(--tx);font-family:'Noto Sans KR',sans-serif;font-size:clamp(14px,3.5vw,16px);outline:none;transition:border-color .2s;-webkit-appearance:none;}
+.ninp::placeholder{color:var(--dim);}
+.ninp:focus{border-color:var(--gd);}
+.nerr{font-size:12px;color:#f87171;margin-top:6px;text-align:left;display:none;}
+.sbtn{display:inline-flex;align-items:center;gap:10px;font-family:'Noto Sans KR',sans-serif;font-size:clamp(14px,3.5vw,16px);font-weight:700;color:#0a0f1e;background:linear-gradient(135deg,var(--gd),var(--gl));border:none;border-radius:99px;padding:clamp(.8rem,2.5vw,1rem) clamp(1.8rem,5vw,2.5rem);cursor:pointer;transition:transform .2s,box-shadow .2s;animation:fup .6s .32s ease both;box-shadow:0 0 40px rgba(201,168,76,.3);-webkit-tap-highlight-color:transparent;}
+.sbtn:hover{transform:translateY(-2px);box-shadow:0 8px 50px rgba(201,168,76,.45);}
+.sbtn:active{transform:scale(.97);}
+.tprev{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:clamp(1.5rem,4vh,3rem);animation:fup .6s .4s ease both;}
+.tchip{font-size:clamp(11px,2.8vw,12px);padding:5px 13px;border:1px solid var(--bd);border-radius:99px;color:var(--dim);background:var(--sf);}
+.alink{margin-top:clamp(1.2rem,3vh,2rem);animation:fup .6s .45s ease both;}
+.alink button{background:none;border:none;color:var(--dim);font-size:12px;cursor:pointer;text-decoration:underline;font-family:'Noto Sans KR',sans-serif;-webkit-tap-highlight-color:transparent;}
+.alink button:hover{color:var(--sub);}
+
+/* ── MODAL ── */
+.mbd{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.75);display:none;align-items:center;justify-content:center;padding:1.5rem;}
+.mbd.open{display:flex;}
+.mbox{background:var(--sf);border:1px solid var(--bd);border-radius:20px;padding:clamp(1.5rem,5vw,2rem);width:100%;max-width:360px;}
+.mtitle{font-size:16px;font-weight:700;margin-bottom:1rem;}
+.minp{width:100%;padding:.8rem 1rem;background:var(--sf2);border:1px solid var(--bd);border-radius:10px;color:var(--tx);font-family:'Noto Sans KR',sans-serif;font-size:15px;outline:none;margin-bottom:.6rem;-webkit-appearance:none;}
+.minp:focus{border-color:var(--gd);}
+.merr{font-size:12px;color:#f87171;margin-bottom:.8rem;display:none;}
+.mbtns{display:flex;gap:8px;}
+.mcancel{flex:1;padding:.75rem;background:none;border:1px solid var(--bd);border-radius:10px;color:var(--sub);font-family:'Noto Sans KR',sans-serif;font-size:14px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.mcancel:hover{background:var(--sf2);}
+.mok{flex:1;padding:.75rem;background:linear-gradient(135deg,var(--gd),var(--gl));border:none;border-radius:10px;color:#0a0f1e;font-family:'Noto Sans KR',sans-serif;font-size:14px;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.mok:hover{opacity:.9;}
+
+/* ── QUIZ ── */
+#quiz{padding:clamp(1rem,3vh,2rem) 0 clamp(3rem,8vh,5rem);min-height:100vh;}
+.qhdr{display:flex;justify-content:space-between;align-items:center;padding:clamp(1rem,3vh,1.5rem) 0 clamp(1rem,3vh,1.8rem);}
+.qlogo{font-family:'Noto Serif KR',serif;font-size:14px;color:var(--gd);}
+.qright{text-align:right;}
+.qcnt{font-size:13px;color:var(--dim);}
+.qnam{font-size:12px;color:var(--sub);margin-top:2px;}
+.ptrack{width:100%;height:3px;background:var(--bd);border-radius:99px;margin-bottom:clamp(1.5rem,5vh,2.5rem);overflow:hidden;}
+.pfill{height:100%;background:linear-gradient(90deg,var(--ac),var(--gd));border-radius:99px;transition:width .5s cubic-bezier(.4,0,.2,1);}
+.qsc{font-size:clamp(10px,2.5vw,11px);letter-spacing:.1em;text-transform:uppercase;color:var(--gd);margin-bottom:.8rem;display:flex;align-items:center;gap:8px;}
+.qsc::before{content:"";display:inline-block;width:20px;height:1px;background:var(--gd);}
+.qctx{background:var(--sf2);border:1px solid var(--bd);border-left:3px solid var(--ac);border-radius:0 10px 10px 0;padding:clamp(.8rem,2.5vw,1rem) clamp(.9rem,3vw,1.2rem);font-size:clamp(12px,3vw,14px);color:var(--sub);line-height:1.75;margin-bottom:clamp(1rem,3vh,1.5rem);}
+.qmain{font-family:'Noto Serif KR',serif;font-size:clamp(1rem,3.5vw,1.25rem);font-weight:600;line-height:1.6;margin-bottom:clamp(1rem,3vh,1.8rem);}
+.opts{display:flex;flex-direction:column;gap:clamp(8px,2vw,10px);margin-bottom:clamp(1.5rem,4vh,2.5rem);}
+.opt{display:flex;align-items:flex-start;gap:clamp(10px,3vw,14px);padding:clamp(.85rem,3vw,1.05rem) clamp(1rem,3vw,1.3rem);background:var(--sf);border:1px solid var(--bd);border-radius:14px;cursor:pointer;transition:border-color .2s,background .2s,transform .15s;text-align:left;width:100%;-webkit-tap-highlight-color:transparent;}
+.opt:active{transform:scale(.98);}
+@media(hover:hover){.opt:hover{border-color:var(--bdh);background:var(--sf2);transform:translateX(4px);}}
+.opt.sel{border-color:var(--gd);background:var(--gdim);}
+@media(hover:hover){.opt.sel{transform:translateX(4px);}}
+.oa{flex-shrink:0;width:28px;height:28px;border-radius:50%;border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--dim);transition:background .2s,border-color .2s,color .2s;margin-top:1px;}
+.opt.sel .oa{background:var(--gd);border-color:var(--gd);color:#0a0f1e;}
+.ot{font-size:clamp(13px,3.5vw,14px);line-height:1.65;color:var(--tx);}
+.opt.sel .ot{color:var(--gl);}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:10px;}
+.nbk{font-size:clamp(13px,3.5vw,14px);color:var(--dim);background:none;border:1px solid var(--bd);border-radius:99px;padding:clamp(.55rem,2vw,.65rem) clamp(1rem,3vw,1.3rem);cursor:pointer;transition:color .2s,border-color .2s;-webkit-tap-highlight-color:transparent;white-space:nowrap;font-family:'Noto Sans KR',sans-serif;}
+.nbk:hover{color:var(--tx);border-color:var(--bdh);}
+.nbk:disabled{opacity:.2;cursor:default;}
+.nnx{font-size:clamp(14px,3.5vw,15px);font-weight:700;color:#0a0f1e;background:linear-gradient(135deg,var(--gd),var(--gl));border:none;border-radius:99px;padding:clamp(.65rem,2vw,.75rem) clamp(1.5rem,4vw,2rem);cursor:pointer;transition:opacity .2s,transform .15s,box-shadow .2s;box-shadow:0 0 30px rgba(201,168,76,.2);-webkit-tap-highlight-color:transparent;white-space:nowrap;font-family:'Noto Sans KR',sans-serif;}
+.nnx:hover{transform:translateY(-1px);box-shadow:0 6px 30px rgba(201,168,76,.35);}
+.nnx:active{transform:scale(.97);}
+.nnx:disabled{opacity:.25;cursor:default;transform:none;box-shadow:none;}
+
+/* ── LOADING ── */
+#loading{min-height:100vh;gap:1.5rem;}
+.lrings{position:relative;width:70px;height:70px;}
+.ring{position:absolute;inset:0;border-radius:50%;border:2px solid transparent;animation:spin 1.2s linear infinite;}
+.ring:nth-child(1){border-top-color:var(--gd);}
+.ring:nth-child(2){border-right-color:var(--ac);inset:10px;animation-duration:1s;animation-direction:reverse;}
+.ring:nth-child(3){border-bottom-color:var(--gl);inset:20px;animation-duration:.8s;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.ltxt{font-size:15px;color:var(--sub);}
+
+/* ── RESULT ── */
+#result{padding:clamp(1.5rem,4vh,3rem) 0 clamp(4rem,10vh,6rem);min-height:100vh;}
+.rhdr{text-align:center;padding:clamp(1rem,3vh,2rem) 0 clamp(1.5rem,4vh,2.5rem);}
+.reye{font-size:clamp(11px,2.8vw,12px);letter-spacing:.12em;text-transform:uppercase;color:var(--gd);margin-bottom:1.5rem;}
+.remblem{width:clamp(80px,20vw,110px);height:clamp(80px,20vw,110px);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:clamp(34px,10vw,50px);margin:0 auto 1.5rem;border:2px solid rgba(201,168,76,.4);background:var(--gdim);animation:pulse 3s ease-in-out infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(201,168,76,0);}50%{box-shadow:0 0 0 18px rgba(201,168,76,.07);}}
+.rname{font-family:'Noto Serif KR',serif;font-size:clamp(1.5rem,5.5vw,2.3rem);font-weight:700;margin-bottom:.4rem;background:linear-gradient(135deg,#fff,var(--gl));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.rkw{font-size:clamp(12px,3vw,14px);color:var(--gd);letter-spacing:.06em;margin-bottom:.5rem;}
+.rnotice{font-size:clamp(11px,2.8vw,12px);color:var(--dim);background:var(--sf2);border-radius:8px;padding:6px 14px;display:inline-block;margin-bottom:2rem;}
+
+/* result sections */
+.rsec{margin-bottom:2.5rem;}
+.stitle{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:1rem;display:flex;align-items:center;gap:8px;}
+.stitle::after{content:"";flex:1;height:1px;background:var(--bd);}
+
+/* desc card */
+.rdesc{background:var(--sf);border:1px solid var(--bd);border-radius:20px;padding:clamp(1.3rem,4vw,2rem);text-align:left;}
+.rdesc p{font-size:clamp(13px,3.5vw,15px);line-height:1.9;color:var(--sub);}
+.rcore{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:1.2rem;}
+.rcore-item{background:var(--sf2);border-radius:10px;padding:.9rem 1rem;}
+.rcore-lbl{font-size:11px;color:var(--dim);letter-spacing:.05em;margin-bottom:4px;}
+.rcore-val{font-size:clamp(12px,3vw,13px);color:var(--tx);font-weight:500;}
+
+/* jobs */
+.job-grid{display:flex;flex-direction:column;gap:10px;}
+.job-card{background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:clamp(1rem,3vw,1.2rem) clamp(1rem,3vw,1.3rem);display:flex;gap:14px;align-items:flex-start;}
+.job-icon{font-size:clamp(22px,6vw,28px);flex-shrink:0;margin-top:2px;}
+.job-info{}
+.job-title{font-size:clamp(13px,3.5vw,15px);font-weight:700;margin-bottom:3px;}
+.job-org{font-size:clamp(11px,2.8vw,12px);color:var(--gd);margin-bottom:6px;}
+.job-desc{font-size:clamp(12px,3vw,13px);color:var(--sub);line-height:1.65;}
+
+/* figures */
+.fig-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;}
+.fig-card{background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:clamp(1rem,3vw,1.2rem);}
+.fig-name{font-size:clamp(13px,3.5vw,15px);font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:8px;}
+.fig-role{font-size:clamp(11px,2.8vw,12px);color:var(--gd);margin-bottom:8px;}
+.fig-desc{font-size:clamp(11px,2.8vw,12px);color:var(--sub);line-height:1.65;}
+
+/* chart */
+.clist{display:flex;flex-direction:column;gap:14px;}
+.cmeta{display:flex;justify-content:space-between;margin-bottom:5px;}
+.clbl{font-size:clamp(12px,3vw,13px);color:var(--sub);}
+.cpct{font-size:clamp(12px,3vw,13px);font-weight:700;}
+.ctrack{height:7px;background:var(--bd);border-radius:99px;overflow:hidden;}
+.cfill{height:100%;border-radius:99px;width:0;transition:width 1.1s cubic-bezier(.4,0,.2,1);}
+
+/* partner */
+.partner-card{background:var(--sf);border:2px solid var(--bd);border-radius:20px;padding:clamp(1.3rem,4vw,1.8rem);display:flex;gap:16px;align-items:flex-start;}
+.partner-left{flex-shrink:0;}
+.partner-emblem{width:clamp(52px,14vw,68px);height:clamp(52px,14vw,68px);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:clamp(24px,7vw,32px);border:2px solid rgba(201,168,76,.25);background:var(--gdim);}
+.partner-right{}
+.partner-label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--gd);margin-bottom:4px;}
+.partner-name{font-family:'Noto Serif KR',serif;font-size:clamp(1rem,4vw,1.25rem);font-weight:700;margin-bottom:4px;}
+.partner-kw{font-size:clamp(11px,2.8vw,12px);color:var(--gd);margin-bottom:10px;}
+.partner-desc{font-size:clamp(12px,3vw,13px);color:var(--sub);line-height:1.7;}
+.partner-why{margin-top:10px;padding:10px 12px;background:var(--sf2);border-radius:10px;font-size:clamp(11px,2.8vw,12px);color:var(--sub);line-height:1.65;}
+.partner-why strong{color:var(--gl);font-weight:500;}
+
+.retry-wrap{text-align:center;padding-top:1rem;}
+.retry-btn{font-family:'Noto Sans KR',sans-serif;font-size:14px;color:var(--sub);background:none;border:1px solid var(--bd);border-radius:99px;padding:.7rem 1.8rem;cursor:pointer;transition:color .2s,border-color .2s;-webkit-tap-highlight-color:transparent;}
+.retry-btn:hover{color:var(--tx);border-color:var(--bdh);}
+
+/* ── ADMIN ── */
+#admin{padding:clamp(1.5rem,4vh,2.5rem) 0 clamp(3rem,8vh,5rem);min-height:100vh;}
+.adhdr{display:flex;justify-content:space-between;align-items:flex-start;padding:clamp(1rem,3vh,1.5rem) 0 clamp(1.5rem,4vh,2.5rem);flex-wrap:wrap;gap:10px;}
+.adbadge{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gd);margin-bottom:4px;}
+.adtitle{font-family:'Noto Serif KR',serif;font-size:clamp(1.2rem,4vw,1.6rem);font-weight:700;}
+.adexit{font-size:13px;color:var(--dim);background:none;border:1px solid var(--bd);border-radius:99px;padding:.5rem 1rem;cursor:pointer;font-family:'Noto Sans KR',sans-serif;-webkit-tap-highlight-color:transparent;transition:color .2s;}
+.adexit:hover{color:var(--tx);}
+.adstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:clamp(8px,2vw,12px);margin-bottom:clamp(1.5rem,4vh,2.5rem);}
+.stcrd{background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:clamp(.9rem,3vw,1.2rem);text-align:center;}
+.stemi{font-size:clamp(20px,5vw,26px);margin-bottom:6px;}
+.stnum{font-size:clamp(1.2rem,4vw,1.6rem);font-weight:700;margin-bottom:2px;}
+.stlbl{font-size:clamp(10px,2.5vw,11px);color:var(--dim);line-height:1.4;}
+.frow{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:clamp(1rem,3vh,1.5rem);}
+.fbtn{font-size:clamp(11px,3vw,13px);padding:6px 14px;border:1px solid var(--bd);border-radius:99px;background:var(--sf);color:var(--dim);cursor:pointer;transition:all .2s;font-family:'Noto Sans KR',sans-serif;-webkit-tap-highlight-color:transparent;}
+.fbtn:hover{color:var(--tx);border-color:var(--bdh);}
+.fbtn.on{border-color:transparent;}
+.rlist{display:flex;flex-direction:column;gap:clamp(8px,2vw,10px);margin-bottom:1.5rem;}
+.rrow{display:flex;align-items:center;gap:clamp(10px,3vw,14px);background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:clamp(.9rem,3vw,1.1rem) clamp(1rem,3vw,1.2rem);transition:border-color .2s;}
+.rrow:hover{border-color:var(--bdh);}
+.rnum{font-size:12px;color:var(--dim);width:22px;flex-shrink:0;text-align:center;}
+.remi{font-size:clamp(18px,5vw,22px);flex-shrink:0;}
+.rinfo{flex:1;min-width:0;}
+.rnam{font-size:clamp(13px,3.5vw,15px);font-weight:500;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.rtyp{font-size:clamp(11px,2.8vw,12px);color:var(--dim);}
+.rtim{font-size:clamp(10px,2.5vw,11px);color:var(--dim);flex-shrink:0;}
+.empty{text-align:center;padding:3rem 1rem;color:var(--dim);font-size:14px;}
+.ei{font-size:40px;margin-bottom:1rem;}
+.adbot{display:flex;justify-content:flex-end;}
+.adclr{font-size:12px;color:var(--dim);background:none;border:1px solid rgba(248,113,113,.2);border-radius:99px;padding:.5rem 1rem;cursor:pointer;font-family:'Noto Sans KR',sans-serif;-webkit-tap-highlight-color:transparent;transition:color .2s,border-color .2s;}
+.adclr:hover{color:#f87171;border-color:rgba(248,113,113,.5);}
+
+/* ANIM */
+@keyframes fup{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.fi{animation:fup .5s ease both;}
+.si{animation:slideIn .35s ease both;}
+@keyframes slideIn{from{opacity:0;transform:translateX(24px);}to{opacity:1;transform:translateX(0);}}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="orb o1"></div>
+<div class="orb o2"></div>
+
+<!-- MODAL -->
+<div class="mbd" id="amd">
+  <div class="mbox">
+    <div class="mtitle">🔐 관리자 로그인</div>
+    <input class="minp" type="password" id="ainp" placeholder="관리자 코드 입력" onkeydown="if(event.key==='Enter')chkA()">
+    <div class="merr" id="aerr">코드가 올바르지 않습니다.</div>
+    <div class="mbtns">
+      <button class="mcancel" onclick="closeA()">취소</button>
+      <button class="mok" onclick="chkA()">확인</button>
+    </div>
+  </div>
+</div>
+
+<!-- INTRO -->
+<div id="intro" class="screen active">
+  <div class="ibadge">🌐 대한민국청소년의회 · 청소년외교관 5기</div>
+  <span class="iglobe">🌏</span>
+  <h1 class="ititle">나의 외교 스타일은<br><span>무엇일까?</span></h1>
+  <p class="isub">10가지 국제 시나리오에 답하고,<br>당신만의 외교 유형을 발견하세요.</p>
+  <div class="imeta"><span>10문항</span><span>5가지 유형</span><span>약 3~5분 소요</span></div>
+  <div class="nwrap">
+    <label class="nlbl" for="ninp">실명을 입력하세요</label>
+    <input class="ninp" type="text" id="ninp" placeholder="예) 홍길동" maxlength="10" onkeydown="if(event.key==='Enter')startQ()">
+    <div class="nerr" id="nerr">이름을 입력해주세요.</div>
+  </div>
+  <button class="sbtn" onclick="startQ()">검사 시작하기 →</button>
+  <div class="tprev">
+    <span class="tchip">⚔️ 현실주의형</span>
+    <span class="tchip">🤝 자유주의형</span>
+    <span class="tchip">🚀 미래전략형</span>
+    <span class="tchip">🎭 문화외교형</span>
+    <span class="tchip">⚖️ 규범수호형</span>
+  </div>
+  <div class="alink"><button onclick="openA()">관리자 페이지</button></div>
+</div>
+
+<!-- QUIZ -->
+<div id="quiz" class="screen">
+  <div class="w">
+    <div class="qhdr">
+      <div class="qlogo">외교 MBTI</div>
+      <div class="qright"><div class="qcnt" id="qcnt"></div><div class="qnam" id="qnam"></div></div>
+    </div>
+    <div class="ptrack"><div class="pfill" id="pfill"></div></div>
+    <div id="qbody"></div>
+    <div class="nav">
+      <button class="nbk" id="bprev" onclick="prevQ()">← 이전</button>
+      <button class="nnx" id="bnxt" onclick="nextQ()">다음 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- LOADING -->
+<div id="loading" class="screen">
+  <div class="lrings"><div class="ring"></div><div class="ring"></div><div class="ring"></div></div>
+  <div class="ltxt">외교 스타일 분석 중...</div>
+</div>
+
+<!-- RESULT -->
+<div id="result" class="screen">
+  <div class="w"><div id="rcont"></div></div>
+</div>
+
+<!-- ADMIN -->
+<div id="admin" class="screen">
+  <div class="w">
+    <div class="adhdr">
+      <div><div class="adbadge">관리자 대시보드</div><div class="adtitle">참여자 결과 현황</div></div>
+      <button class="adexit" onclick="exitAdm()">← 나가기</button>
+    </div>
+    <div class="adstats" id="adstats"></div>
+    <div class="frow" id="frow"></div>
+    <div class="rlist" id="rlist"></div>
+    <div class="adbot"><button class="adclr" onclick="clrAll()">전체 데이터 초기화</button></div>
+  </div>
+</div>
+
+<script>
+/* ════════════════════════════════
+   TYPE DEFINITIONS
+════════════════════════════════ */
+const T = {
+  R: {
+    name:"현실주의형 외교관", emoji:"⚔️", color:"#e07b54",
+    kw:"국익 · 안보 · 힘의 균형",
+    desc:"당신은 냉철한 현실 감각을 갖춘 전략가형 외교관입니다. 국제사회를 '협력의 공간'이 아닌 '이익과 힘이 충돌하는 현장'으로 바라보며, 자국의 안보와 국익을 외교의 최우선 기준으로 삼습니다. 감정이나 이상보다 실질적인 성과와 힘의 균형을 중시하고, 위기 상황에서 빠른 판단과 강한 실행력을 발휘합니다. 외교 협상에서 양보보다 우위를 먼저 확보하는 경향이 있으며, 상대방의 의도를 분석하고 최악의 시나리오를 미리 대비하는 데 뛰어납니다.",
+    cores:[{l:"핵심 가치",v:"국가 안보 · 국익 극대화"},{l:"외교 방식",v:"강압 + 억제 + 전략적 협상"},{l:"강점",v:"위기 대응력, 전략 수립"},{l:"주의할 점",v:"국제 협력 약화, 신뢰 손상"}],
+    jobs:[
+      {icon:"🛡️", title:"안보외교관 / 국방협력관", org:"외교부 안보·군비통제외교기획관실",
+       desc:"동맹국과의 군사 협력 강화, 무기 수출 협상, 미사일 방어 체계 조율 등 국가 안보와 직결된 외교 업무를 담당합니다. 한미동맹, 한미일 안보협력처럼 전략적 이해관계를 계산하며 협상하는 역할이에요."},
+      {icon:"📊", title:"경제안보 외교관", org:"외교부 경제안보외교센터",
+       desc:"반도체·배터리·희토류처럼 국가 핵심 자원의 공급망을 지키는 외교를 담당합니다. 무역 제재, 기술 통제, 전략물자 협상 등 경제와 안보가 교차하는 영역에서 국익을 지키는 역할입니다."}
+    ],
+    figs:[
+      {name:"헨리 키신저", era:"미국 국무장관 (1973–1977)", desc:"'힘의 균형(Balance of Power)'을 외교의 핵심 원리로 삼아, 미중 수교와 베트남전 종전 협상을 이끌었습니다. '적과도 협상한다'는 현실주의 외교의 교과서적 인물."},
+      {name:"조지 케넌", era:"미국 외교관 · 전략가", desc:"냉전 초기 소련 봉쇄 전략('봉쇄 정책')을 설계한 인물. 감정 없이 국가 이익만으로 외교를 설계해야 한다고 주장한 현실주의 외교 이론의 대부."},
+      {name:"이승만", era:"대한민국 초대 대통령", desc:"한국전쟁 이후 한미상호방위조약을 이끌어냈습니다. '미국과의 동맹이 대한민국의 생존'이라는 현실적 판단 아래, 끊임없는 압박 외교로 안전보장을 확보한 인물."}
+    ],
+    partner:"L",
+    partnerWhy:"자유주의형 협상가는 당신이 구축한 힘의 우위를 다자 협력 구조로 전환시켜 주는 파트너입니다. 당신이 '강함'을 만들면, 자유주의형이 그 강함을 '신뢰와 규칙'으로 제도화합니다. 현실주의형의 전략력과 자유주의형의 협력 감각이 만나면 가장 균형 잡힌 외교팀이 완성됩니다."
+  },
+  L: {
+    name:"자유주의형 협상가", emoji:"🤝", color:"#4f9cf9",
+    kw:"협력 · 다자주의 · 상호의존",
+    desc:"당신은 국제사회의 협력 가능성을 믿는 협상가형 외교관입니다. 국가들이 반드시 대립할 필요는 없으며, 공동의 이익을 위해 규칙을 만들고 함께 따를 수 있다고 생각합니다. UN, WTO, G20처럼 여러 나라가 함께 참여하는 다자 무대에서 빛을 발하며, 어떤 상황에서도 대화와 협의를 통한 해결을 선호합니다. 양보와 타협을 두려워하지 않고, 장기적 신뢰 관계를 구축하는 데 탁월합니다.",
+    cores:[{l:"핵심 가치",v:"다자 협력 · 국제 제도"},{l:"외교 방식",v:"협상 · 제도 구축 · 연대"},{l:"강점",v:"신뢰 구축, 합의 도출"},{l:"주의할 점",v:"무임승차 문제, 느린 실행"}],
+    jobs:[
+      {icon:"🌐", title:"다자외교관 / 국제기구 담당관", org:"외교부 국제기구국 · 주UN대표부",
+       desc:"UN 총회, 안전보장이사회, WHO, WTO 등 국제기구에서 우리나라를 대표합니다. 여러 국가들과 공동 결의안을 작성하고, 국제 협약 협상에 참여하며, 다자 외교 무대에서 한국의 입장을 조율합니다."},
+      {icon:"✍️", title:"조약 협상관", org:"외교부 조약국",
+       desc:"FTA(자유무역협정), 투자협정, 범죄인 인도 협정 등 국가 간 조약을 협상하고 체결합니다. 상대국의 이익도 반영하면서 우리 이익도 지키는 '윈윈(Win-Win)' 구조를 설계하는 역할입니다."}
+    ],
+    figs:[
+      {name:"반기문", era:"UN 사무총장 (2007–2016)", desc:"'조용한 외교'와 '끈질긴 대화'로 기후변화협약, 지속가능발전목표(SDGs) 채택을 이끌었습니다. 어떤 나라와도 대화 창구를 열어두는 협상가의 전형."},
+      {name:"코피 아난", era:"UN 사무총장 (1997–2006)", desc:"아프리카 분쟁 지역에서 다자 평화협상을 주도했고, '책임 보호(R2P)' 원칙을 국제사회에 확립시킨 인물. 규칙 기반 국제 질서의 상징."},
+      {name:"김대중", era:"대한민국 대통령 (1998–2003)", desc:"대북 햇볕정책으로 남북 정상회담을 성사시켰습니다. '대화와 교류가 변화를 만든다'는 자유주의 외교 철학을 실천한 한국 외교의 대표적 협상가."}
+    ],
+    partner:"F",
+    partnerWhy:"미래전략형은 당신이 구축한 협력 구조에 새로운 미래 의제(AI, 기후, 우주 등)를 채워주는 파트너입니다. 당신이 '함께하는 틀'을 만들면, 미래전략형이 그 틀 안에서 혁신적인 어젠다를 설정합니다. 제도를 만드는 힘과 의제를 설정하는 힘이 결합하면 강력한 외교 팀이 됩니다."
+  },
+  F: {
+    name:"미래외교 전략가", emoji:"🚀", color:"#5dca9e",
+    kw:"기술 · 혁신 · 미래 의제 설계",
+    desc:"당신은 아직 그려지지 않은 외교 지도를 먼저 설계하는 미래지향형 외교관입니다. AI 규범, 기후 협약, 우주 개발, 디지털 경제처럼 전통적인 외교 교과서에 없는 새로운 의제들을 발굴하고, 국제사회가 함께 대응할 수 있는 규범과 제도를 만드는 데 관심이 많습니다. 변화를 두려워하지 않고, 10년 후 세계를 먼저 상상하는 탁월한 안목이 강점입니다.",
+    cores:[{l:"핵심 가치",v:"혁신 · 미래 세대 · 기술 거버넌스"},{l:"외교 방식",v:"의제 설정 · 규범 창출 · 선제 대응"},{l:"강점",v:"미래 예측, 창의적 문제 해결"},{l:"주의할 점",v:"현실 적용 속도, 단기 실행력"}],
+    jobs:[
+      {icon:"💻", title:"사이버·디지털 외교관", org:"외교부 사이버외교정책관",
+       desc:"AI 윤리 국제 규범, 데이터 국경 간 이동, 사이버 공격 대응 국제협력 등 디지털 시대의 새로운 외교 이슈를 담당합니다. 아직 국제 규칙이 없는 영역에서 한국의 입장을 먼저 설계하는 역할이에요."},
+      {icon:"🌿", title:"기후·환경 외교관", org:"외교부 기후변화환경외교과 · COP 협상단",
+       desc:"파리협정 후속 협상, 탄소 국경세 대응, 녹색 ODA(공적개발원조) 정책을 담당합니다. 기후위기라는 인류 공동 과제에서 한국의 역할을 설계하는 미래지향적 외교 업무입니다."}
+    ],
+    figs:[
+      {name:"안토니우 구테흐스", era:"UN 사무총장 (2017–현재)", desc:"AI 거버넌스, 기후 행동, 디지털 격차 해소를 UN의 핵심 의제로 격상시켰습니다. '인류가 직면한 위기에 미리 대응해야 한다'는 미래전략형 외교의 현재진행형 인물."},
+      {name:"무스타파 술레이만", era:"AI 정책가 · 기업인", desc:"AI 안전과 국제 거버넌스를 국가 외교 의제로 올려야 한다고 주장하는 선구자. 기술과 외교의 경계를 허무는 미래형 외교관의 상징."},
+      {name:"노무현", era:"대한민국 대통령 (2003–2008)", desc:"동북아 균형자론을 제시하며 한반도 평화 구조를 새로운 시각으로 재설계하려 했습니다. 기존 외교 틀에 얽매이지 않고 새로운 외교 비전을 제시한 인물."}
+    ],
+    partner:"N",
+    partnerWhy:"국제규범 수호자는 당신이 설계한 미래 의제에 윤리적 기준과 법적 근거를 부여하는 파트너입니다. 당신이 '새로운 규범'을 제안하면, 규범수호형이 그 규범에 정당성과 구속력을 더합니다. 혁신과 원칙이 결합하면 지속 가능한 미래 외교 의제가 완성됩니다."
+  },
+  C: {
+    name:"구성주의형 문화외교관", emoji:"🎭", color:"#a78bfa",
+    kw:"정체성 · 소프트파워 · 문화적 영향력",
+    desc:"당신은 이야기와 문화의 힘이 외교의 가장 강력한 무기가 될 수 있다고 믿는 문화외교관입니다. 국가의 정체성, 이미지, 가치관이 국제사회에서 어떻게 인식되느냐가 외교력을 결정한다고 생각합니다. K-팝, K-드라마처럼 문화 콘텐츠가 수많은 나라에 한국을 친숙하게 만들 듯, 딱딱한 협상 테이블보다 사람과 사람의 연결에서 진짜 외교가 시작된다고 믿습니다.",
+    cores:[{l:"핵심 가치",v:"소프트파워 · 국가 이미지 · 상호 이해"},{l:"외교 방식",v:"문화 교류 · 공공외교 · 브랜딩"},{l:"강점",v:"공감 능력, 스토리텔링, 네트워킹"},{l:"주의할 점",v:"단기 성과 측정 어려움"}],
+    jobs:[
+      {icon:"🎨", title:"공공외교관 / 문화외교관", org:"외교부 공공외교관·한국문화원",
+       desc:"한국국제문화교류진흥원(KOFICE), 해외 한국문화원, 한국어 보급 사업 등을 통해 한국의 문화·가치·이미지를 전 세계에 전달합니다. K-컬처 외교, 한류 협력, 청년 교류 프로그램 기획이 핵심 업무예요."},
+      {icon:"🎤", title:"국제홍보관 / 외교부 대변인실", org:"외교부 대변인실 · 해외공관 공보관",
+       desc:"해외 언론을 대상으로 한국의 외교 정책을 설명하고, 국가 이미지 전략을 기획합니다. '어떻게 전달하느냐'가 곧 외교력이 되는 시대, 스토리텔링과 미디어 감각이 핵심입니다."}
+    ],
+    figs:[
+      {name:"조지프 나이", era:"하버드 교수 · 전 미국 국방차관보", desc:"'소프트파워(Soft Power)' 개념을 창안한 학자. 군사력이 아닌 문화·가치·제도의 매력으로 상대를 움직이는 것이 가장 강력한 외교라고 주장했습니다. 문화외교의 이론적 기반을 만든 인물."},
+      {name:"김구", era:"독립운동가 · 대한민국 임시정부 주석", desc:"'나는 우리나라가 세계에서 가장 아름다운 나라가 되기를 원한다'고 했습니다. 군사력이 아닌 문화와 정신으로 독립과 평화를 추구한 문화외교의 선구자."},
+      {name:"세종대왕", era:"조선 4대 국왕 (재위 1418–1450)", desc:"훈민정음 창제, 음악·과학·예술 진흥으로 조선의 정체성과 문화적 자존감을 세웠습니다. '우리만의 언어와 문화'가 곧 국력이라는 것을 보여준 인물."}
+    ],
+    partner:"R",
+    partnerWhy:"현실주의형 외교관은 당신의 부드러운 외교에 전략적 방향과 힘의 뒷받침을 제공하는 파트너입니다. 당신이 '호감'을 쌓으면, 현실주의형이 그 호감을 실질적 이익으로 전환합니다. 소프트파워와 하드파워가 함께 작동할 때 가장 강력한 외교가 완성됩니다."
+  },
+  N: {
+    name:"국제규범 수호자", emoji:"⚖️", color:"#f472b6",
+    kw:"인권 · 국제법 · 정의 · 윤리",
+    desc:"당신은 어떤 상황에서도 옳은 것을 옳다고 말할 수 있는 원칙의 외교관입니다. 국제사회가 힘의 논리가 아닌 법과 규범, 인권과 윤리에 의해 움직여야 한다고 믿습니다. 단기적인 국익보다 장기적인 국제 정의와 신뢰를 더 중요하게 여기며, 국제형사재판소, 유엔인권이사회, 인도주의 협약처럼 국제법과 규범의 틀을 지키고 강화하는 역할에서 빛을 발합니다.",
+    cores:[{l:"핵심 가치",v:"인권 · 국제법 · 정의 · 책임"},{l:"외교 방식",v:"규범 강화 · 제도 감시 · 원칙 협상"},{l:"강점",v:"도덕적 권위, 원칙 수호, 신뢰성"},{l:"주의할 점",v:"유연성 부족, 현실 타협 어려움"}],
+    jobs:[
+      {icon:"⚖️", title:"인권외교관 / 인도주의 담당관", org:"외교부 인권사회과 · 주UN대표부 인권팀",
+       desc:"UN 인권이사회, 국제인권조약기구에서 한국을 대표합니다. 북한 인권, 이주민·난민 보호, 기업과 인권 등 국제 인권 의제를 다루며, 보편적 가치를 외교 언어로 구현하는 역할입니다."},
+      {icon:"🏛️", title:"국제법 전문 외교관", org:"외교부 조약국 · 국제법률국",
+       desc:"영토·해양 분쟁 국제소송(ICJ), 투자자-국가 분쟁 해결(ISDS), 조약 해석 등 국제법 실무를 담당합니다. '규칙'이 곧 외교 무기인 영역에서 한국의 권리를 법으로 지키는 역할입니다."}
+    ],
+    figs:[
+      {name:"엘리너 루스벨트", era:"전 미국 영부인 · UN 인권위원장", desc:"세계인권선언(1948) 초안 작성을 주도했습니다. '권리는 선물이 아니라 모든 인간이 태어날 때부터 가진 것'이라는 신념으로 인권을 국제 규범으로 확립시킨 인물."},
+      {name:"메리 로빈슨", era:"전 아일랜드 대통령 · UN 인권최고대표", desc:"정치적 압력에도 흔들리지 않고 인권 침해를 고발하고 피해자를 대변한 인물. '원칙 없는 외교는 외교가 아니다'라는 신념의 실천자."},
+      {name:"유관순", era:"독립운동가 (1902–1920)", desc:"어떤 탄압에도 굴하지 않고 정의를 외친 인물. 힘이 아닌 원칙과 용기로 국제사회에 한국의 존재를 알린 상징적 존재. 규범수호형 외교의 정신적 뿌리."}
+    ],
+    partner:"C",
+    partnerWhy:"구성주의형 문화외교관은 당신이 지키는 원칙과 가치를 세계 사람들의 마음에 닿는 이야기로 만들어주는 파트너입니다. 당신이 '무엇이 옳은가'를 정의하면, 문화외교형이 '왜 옳은가'를 공감 가능하게 전달합니다. 정의와 공감이 만날 때 가장 강력한 외교 메시지가 탄생합니다."
+  }
+};
+
+/* ════════════════════════════════
+   QUESTIONS  (10문항 × 5선택지, 유형 각 10개 균등)
+   배분: Q마다 R·L·F·C·N 각 1개씩
+════════════════════════════════ */
+const QS = [
+  {
+    sc:"첫 해외 부임 — 대사관 첫날",
+    cx:"당신은 막 한 나라의 대사관에 부임한 신임 외교관입니다. 첫 번째 업무로 현지 외교 환경을 파악하는 보고서를 작성해야 합니다.",
+    q:"보고서에서 가장 먼저 집중적으로 분석하고 싶은 것은?",
+    opts:[
+      {t:"이 나라의 군사력·동맹 관계·우리나라에 대한 전략적 의도",y:"R"},
+      {t:"이 나라가 참여하고 있는 국제기구·조약·협력 네트워크",y:"L"},
+      {t:"이 나라의 디지털 인프라·기술 수준·미래 산업 경쟁력",y:"F"},
+      {t:"이 나라 국민들이 한국에 갖는 이미지와 문화적 거리감",y:"C"},
+      {t:"이 나라의 인권 상황·법치주의 수준·소수자 보호 현황",y:"N"}
+    ]
+  },
+  {
+    sc:"다자 정상회의 — 의제 설정 갈등",
+    cx:"G20 정상회의 준비 과정에서 각국이 핵심 의제를 두고 팽팽히 맞서고 있습니다. 당신은 한국 측 협상 실무자입니다.",
+    q:"한국이 가장 적극적으로 밀어붙여야 할 의제는 무엇이라고 생각하나요?",
+    opts:[
+      {t:"글로벌 AI 안전 규범과 디지털 경제 질서 수립",y:"F"},
+      {t:"UN 안전보장이사회 개혁과 다자 평화유지 강화",y:"L"},
+      {t:"개발도상국 부채 탕감과 국제 원조 확대",y:"N"},
+      {t:"한류·K-컬처를 통한 한국 소프트파워 의제화",y:"C"},
+      {t:"핵 비확산 체제 강화와 미사일 기술 통제 확대",y:"R"}
+    ]
+  },
+  {
+    sc:"경제 제재 협상 — 압박과 대화의 기로",
+    cx:"A국이 국제법을 위반하여 여러 나라가 경제 제재를 검토하고 있습니다. 한국도 입장을 정해야 합니다.",
+    q:"한국이 취해야 할 가장 적절한 입장은 무엇인가요?",
+    opts:[
+      {t:"A국의 기술력·시장이 필요하다면 제재보다 실리적 협력을 선택한다",y:"F"},
+      {t:"동맹국과 공조하여 강력한 제재에 동참한다 — 안보가 우선이다",y:"R"},
+      {t:"한국 기업 피해를 최소화하는 조건으로 제재 수위를 조율한다",y:"C"},
+      {t:"국제법 위반에는 원칙대로 제재에 동참해야 한다",y:"N"},
+      {t:"제재보다 다자 협상 테이블을 만들어 대화로 해결한다",y:"L"}
+    ]
+  },
+  {
+    sc:"문화 충돌 — 현지 반한 감정 발생",
+    cx:"한국 드라마 콘텐츠가 현지 문화를 왜곡했다는 논란으로 B국에서 반한 시위가 일어났습니다.",
+    q:"이 상황을 해결하기 위한 가장 효과적인 방법은?",
+    opts:[
+      {t:"B국 정부에 공식 항의하고 법적 대응 여부를 검토한다",y:"R"},
+      {t:"B국과 공동 문화 교류 프로그램을 만들어 상호 이해를 높인다",y:"N"},
+      {t:"한국 문화원을 통해 현지인과의 직접 소통·대화 행사를 연다",y:"C"},
+      {t:"B국 정부와 외교 채널로 조용히 협의하여 갈등을 해소한다",y:"L"},
+      {t:"디지털 플랫폼을 활용한 새로운 문화 콘텐츠 협력 사업을 제안한다",y:"F"}
+    ]
+  },
+  {
+    sc:"기후 협약 — 선진국과 개도국의 충돌",
+    cx:"기후변화 협약 협상에서 선진국은 강한 감축 목표를, 개발도상국은 경제 성장권을 주장하며 협상이 교착 상태에 빠졌습니다.",
+    q:"한국의 중재 역할로 가장 적절한 것은?",
+    opts:[
+      {t:"기후 협약 불이행 국가에 대한 무역 제재 조항 도입을 제안한다",y:"N"},
+      {t:"기후 취약국에 대한 한국의 녹색 ODA 확대를 제안하며 신뢰를 쌓는다",y:"C"},
+      {t:"선진국·개도국 모두 수용 가능한 단계적 감축 로드맵을 설계한다",y:"L"},
+      {t:"한국의 에너지 안보 이익에 유리한 방향으로 협상 포지션을 정한다",y:"R"},
+      {t:"탄소 포집·수소에너지 등 기술 혁신으로 감축 부담을 낮추는 방안을 제시한다",y:"F"}
+    ]
+  },
+  {
+    sc:"사이버 공격 — 국제 공조 요청",
+    cx:"한국 정부 시스템이 대규모 사이버 공격을 받았습니다. 배후로 C국이 의심되지만 증거가 불충분합니다.",
+    q:"이 상황에서 가장 우선시해야 할 대응은?",
+    opts:[
+      {t:"C국을 공개적으로 지목하고 강경한 외교적 경고를 발송한다",y:"R"},
+      {t:"국제 사이버 공격 대응 공조 체계(INTERPOL·NATO 사이버센터)를 활용한다",y:"L"},
+      {t:"사이버 공간 국제규범(탈린 매뉴얼 등)을 근거로 C국에 법적 책임을 촉구한다",y:"N"},
+      {t:"공격 배후보다 AI 기반 사이버 방어 시스템 구축을 먼저 추진한다",y:"F"},
+      {t:"C국과의 디지털 신뢰 구축 대화 채널을 열어 재발 방지를 논의한다",y:"C"}
+    ]
+  },
+  {
+    sc:"난민 위기 — 수용 여부 논쟁",
+    cx:"이웃 지역의 분쟁으로 대규모 난민이 발생했습니다. 국내에서는 수용에 대한 찬반 논쟁이 뜨겁습니다.",
+    q:"외교관으로서 당신이 가장 중요하게 고려하는 것은?",
+    opts:[
+      {t:"난민은 인도주의 국제협약에 따라 보호받을 권리가 있다 — 원칙대로 수용한다",y:"N"},
+      {t:"국제사회와 분담하는 방식으로 수용 규모와 지원을 조율한다",y:"L"},
+      {t:"난민의 언어·문화 교육을 지원하여 사회 통합 가능성을 높인다",y:"C"},
+      {t:"난민 출신 국가와 조기 귀환 협력 프로그램을 선제적으로 설계한다",y:"F"},
+      {t:"국내 사회 안정과 경제 영향을 먼저 면밀히 검토한 뒤 결정한다",y:"R"}
+    ]
+  },
+  {
+    sc:"AI 거버넌스 — 국제 규범 협상",
+    cx:"UN 차원에서 AI 개발과 사용을 규제하는 국제 협약을 만들려는 논의가 시작되었습니다.",
+    q:"협약 설계에서 가장 중요하게 반영되어야 할 원칙은?",
+    opts:[
+      {t:"AI가 인류의 문화·언어 다양성을 훼손하지 않도록 보호 조항을 넣는다",y:"C"},
+      {t:"AI 기술 선도국이 개도국과 기술을 공유하는 의무 조항을 포함한다",y:"F"},
+      {t:"AI로 인한 인권 침해·차별 금지와 피해자 구제 절차를 명시한다",y:"N"},
+      {t:"협약이 자국 AI 산업 경쟁력을 저해하지 않도록 예외 조항을 확보한다",y:"R"},
+      {t:"모든 국가가 동등하게 참여하는 국제 AI 감독 기구를 설치한다",y:"L"}
+    ]
+  },
+  {
+    sc:"영토 분쟁 — 독도·해양 경계 협상",
+    cx:"한국과 D국 사이의 해양 경계 획정 협상이 오랫동안 교착 상태입니다. 양측 여론 모두 강경합니다.",
+    q:"이 상황에서 가장 현명한 접근법은?",
+    opts:[
+      {t:"국제해양법(UNCLOS)과 ICJ 판례를 근거로 한국 입장의 법적 정당성을 강화한다",y:"N"},
+      {t:"공동 해양 자원 개발 협력을 제안하여 경제적 이익으로 갈등을 우회한다",y:"F"},
+      {t:"3자 중재 또는 국제사법재판소(ICJ) 회부를 통해 규칙 기반으로 해결한다",y:"L"},
+      {t:"군사적 실효 지배를 강화하여 협상에서 우위를 먼저 확보한다",y:"R"},
+      {t:"D국 국민과의 민간 교류를 늘려 갈등 감소와 협상 분위기를 조성한다",y:"C"}
+    ]
+  },
+  {
+    sc:"나의 외교 철학",
+    cx:"당신은 10년 경력의 베테랑 외교관이 되었습니다. 후배 외교관에게 가장 중요한 외교의 본질을 이야기해줄 기회가 생겼습니다.",
+    q:"당신이 전하고 싶은 외교의 핵심은 무엇인가요?",
+    opts:[
+      {t:"외교관의 언어·이야기·공감이 국가의 이미지를 만들고 관계를 바꾼다",y:"C"},
+      {t:"아직 없는 규범을 만드는 사람이 미래 외교의 주인공이 된다",y:"F"},
+      {t:"좋은 외교란 모두가 이길 수 있는 구조를 설계하는 것이다",y:"L"},
+      {t:"힘 없는 외교는 없다 — 국력을 키우는 것이 최고의 외교 준비다",y:"R"},
+      {t:"원칙을 지키는 외교관이 결국 가장 신뢰받는 협상 파트너가 된다",y:"N"}
+    ]
+  }
+];
+
+/* ════════════════════════════════
+   STATE & STORAGE
+════════════════════════════════ */
+const AC='20260718a';
+let cur=0, uname='', ans=[];
+const shuf=QS.map(q=>{const a=[...q.opts];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;});
+function getRec(){try{return JSON.parse(localStorage.getItem('dip5_res')||'[]');}catch(e){return[];}}
+function saveRec(r){const a=getRec();a.push(r);localStorage.setItem('dip5_res',JSON.stringify(a));}
+function clrRec(){localStorage.removeItem('dip5_res');}
+
+/* ════════════════════════════════
+   SCREEN
+════════════════════════════════ */
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
+
+/* ════════════════════════════════
+   MODAL
+════════════════════════════════ */
+function openA(){document.getElementById('amd').classList.add('open');document.getElementById('ainp').value='';document.getElementById('aerr').style.display='none';setTimeout(()=>document.getElementById('ainp').focus(),100);}
+function closeA(){document.getElementById('amd').classList.remove('open');}
+function chkA(){const v=document.getElementById('ainp').value;if(v===AC){closeA();showAdm();}else{document.getElementById('aerr').style.display='block';document.getElementById('ainp').value='';}}
+document.getElementById('amd').addEventListener('click',function(e){if(e.target===this)closeA();});
+
+/* ════════════════════════════════
+   QUIZ
+════════════════════════════════ */
+function startQ(){const n=document.getElementById('ninp').value.trim();const e=document.getElementById('nerr');if(!n){e.style.display='block';document.getElementById('ninp').focus();return;}e.style.display='none';uname=n;cur=0;ans=new Array(QS.length).fill(null);show('quiz');document.getElementById('qnam').textContent=n+'님';render();}
+const LB=['A','B','C','D','E'];
+function render(){const q=QS[cur];document.getElementById('qcnt').textContent=`${cur+1} / ${QS.length}`;document.getElementById('pfill').style.width=`${(cur/QS.length)*100}%`;const oh=shuf[cur].map((o,i)=>`<button class="opt${ans[cur]===i?' sel':''}" onclick="pick(${i})"><span class="oa">${LB[i]}</span><span class="ot">${o.t}</span></button>`).join('');document.getElementById('qbody').innerHTML=`<div class="qsc si">${q.sc}</div><div class="qctx si">${q.cx}</div><div class="qmain si">${q.q}</div><div class="opts si">${oh}</div>`;document.getElementById('bprev').disabled=cur===0;const nb=document.getElementById('bnxt');nb.disabled=ans[cur]===null;nb.textContent=cur===QS.length-1?'결과 보기 →':'다음 →';}
+function pick(i){ans[cur]=i;render();}
+function prevQ(){if(cur>0){cur--;render();}}
+function nextQ(){if(ans[cur]===null)return;if(cur<QS.length-1){cur++;render();}else{show('loading');setTimeout(calc,2000);}}
+
+/* ════════════════════════════════
+   RESULT
+════════════════════════════════ */
+function calc(){
+  const c={R:0,L:0,F:0,C:0,N:0};
+  ans.forEach((a,qi)=>{if(a!==null)c[shuf[qi][a].y]++;});
+  const s=Object.entries(c).sort((a,b)=>b[1]-a[1]);
+  const tk=s[0][0]; const tp=T[tk]; const tot=QS.length;
+  const pt=T[tp.partner];
+
+  saveRec({name:uname,tk,tn:tp.name,em:tp.emoji,kw:tp.kw,
+    time:new Date().toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'})});
+
+  const coreHtml=tp.cores.map(x=>`<div class="rcore-item"><div class="rcore-lbl">${x.l}</div><div class="rcore-val">${x.v}</div></div>`).join('');
+  const jobHtml=tp.jobs.map(j=>`<div class="job-card"><div class="job-icon">${j.icon}</div><div class="job-info"><div class="job-title">${j.title}</div><div class="job-org">${j.org}</div><div class="job-desc">${j.desc}</div></div></div>`).join('');
+  const figHtml=tp.figs.map(f=>`<div class="fig-card"><div class="fig-name">${f.name}</div><div class="fig-role">${f.era}</div><div class="fig-desc">${f.desc}</div></div>`).join('');
+  const barHtml=Object.entries(T).map(([k,t])=>{const p=Math.round((c[k]/tot)*100);return`<div><div class="cmeta"><span class="clbl">${t.emoji} ${t.name}</span><span class="cpct" style="color:${t.color}">${p}%</span></div><div class="ctrack"><div class="cfill" data-p="${p}" style="background:${t.color}"></div></div></div>`;}).join('');
+
+  document.getElementById('rcont').innerHTML=`
+    <div class="rhdr fi">
+      <div class="reye">🌐 ${uname}님의 외교 유형 결과</div>
+      <div class="remblem">${tp.emoji}</div>
+      <div class="rname">${tp.name}</div>
+      <div class="rkw">${tp.kw}</div>
+      <div class="rnotice">※ 이 검사는 외교 이론에 기반한 수업 활동용 유형 탐색 도구입니다.</div>
+    </div>
+
+    <div class="rsec fi">
+      <div class="stitle">유형 상세 설명</div>
+      <div class="rdesc"><p>${tp.desc}</p><div class="rcore">${coreHtml}</div></div>
+    </div>
+
+    <div class="rsec fi">
+      <div class="stitle">이 유형에 어울리는 실제 외교 직무</div>
+      <div class="job-grid">${jobHtml}</div>
+    </div>
+
+    <div class="rsec fi">
+      <div class="stitle">이 유형을 대표하는 역사적 인물</div>
+      <div class="fig-grid">${figHtml}</div>
+    </div>
+
+    <div class="rsec fi">
+      <div class="stitle">나의 외교 스타일 분포</div>
+      <div class="clist">${barHtml}</div>
+    </div>
+
+    <div class="rsec fi">
+      <div class="stitle">찰떡궁합 유형</div>
+      <div class="partner-card">
+        <div class="partner-left"><div class="partner-emblem">${pt.emoji}</div></div>
+        <div class="partner-right">
+          <div class="partner-label">Best Partner</div>
+          <div class="partner-name">${pt.name}</div>
+          <div class="partner-kw">${pt.kw}</div>
+          <div class="partner-desc">${pt.desc.slice(0,90)}...</div>
+          <div class="partner-why"><strong>궁합 이유 :</strong> ${tp.partnerWhy}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="retry-wrap fi"><button class="retry-btn" onclick="restart()">↺ 다시 검사하기</button></div>`;
+
+  show('result');
+  setTimeout(()=>{document.querySelectorAll('.cfill').forEach(el=>{el.style.width=el.dataset.p+'%';});},200);
+}
+function restart(){cur=0;ans=new Array(QS.length).fill(null);document.getElementById('ninp').value='';show('intro');}
+
+/* ════════════════════════════════
+   ADMIN
+════════════════════════════════ */
+let af='all';
+function showAdm(){renderAdm();show('admin');}
+function exitA2(){show('intro');}
+function renderAdm(){
+  const recs=getRec();
+  const tc={R:0,L:0,F:0,C:0,N:0};
+  recs.forEach(r=>{if(tc[r.tk]!==undefined)tc[r.tk]++;});
+  document.getElementById('adstats').innerHTML=`<div class="stcrd"><div class="stemi">👥</div><div class="stnum">${recs.length}</div><div class="stlbl">총 참여자</div></div>${Object.entries(T).map(([k,t])=>`<div class="stcrd"><div class="stemi">${t.emoji}</div><div class="stnum" style="color:${t.color}">${tc[k]}</div><div class="stlbl">${t.name}</div></div>`).join('')}`;
+  document.getElementById('frow').innerHTML=`<button class="fbtn${af==='all'?' on':''}" style="${af==='all'?'background:var(--gd);color:#0a0f1e;':''}" onclick="setF('all')">전체 (${recs.length})</button>${Object.entries(T).map(([k,t])=>`<button class="fbtn${af===k?' on':''}" style="${af===k?`background:${t.color};color:#0a0f1e;`:''}" onclick="setF('${k}')">${t.emoji} ${tc[k]}</button>`).join('')}`;
+  const fl=af==='all'?recs:recs.filter(r=>r.tk===af);
+  const le=document.getElementById('rlist');
+  if(fl.length===0){le.innerHTML=`<div class="empty"><div class="ei">📭</div>아직 참여자가 없습니다.</div>`;return;}
+  le.innerHTML=fl.slice().reverse().map((r,i)=>`<div class="rrow"><div class="rnum">${fl.length-i}</div><div class="remi">${r.em}</div><div class="rinfo"><div class="rnam">${r.name}</div><div class="rtyp">${r.tn} · ${r.kw}</div></div><div class="rtim">${r.time||''}</div></div>`).join('');
+}
+function setF(f){af=f;renderAdm();}
+function clrAll(){if(confirm('전체 데이터를 초기화할까요?')){clrRec();renderAdm();}}
+function exitAdm(){show('intro');}
+</script>
+</body>
+</html>
